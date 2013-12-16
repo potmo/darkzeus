@@ -1,0 +1,44 @@
+{
+"name":"base_symbols",
+"outputFormat":"jpg",
+"minWidth":0,
+"minHeight":0,
+"maxWidth":4096,
+"maxHeight":4096,
+"pot":false,
+"rotation":false,
+"frames": [
+	{
+		"file": "base_symbols/boat.jpg"
+	},
+	{
+		"file": "base_symbols/harp.jpg"	
+	},
+	{
+		"file": "base_symbols/helmet.jpg"	
+	},
+	{
+		"file": "base_symbols/lightning.jpg"	
+	},
+	{
+		"file": "base_symbols/owl_coin.jpg"	
+	},
+	{
+		"file": "base_symbols/pegasus.jpg"	
+	},
+	{
+		"file": "base_symbols/person_coin.jpg"	
+	},
+	{
+		"file": "base_symbols/vase.jpg"	
+	},
+	{
+		"file": "base_symbols/wreath.jpg"	
+	},
+	{
+		"file": "base_symbols/zeus.jpg"	
+	},
+	{
+		"file": "base_symbols/wild.jpg"	
+	}]
+}

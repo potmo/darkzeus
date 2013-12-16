@@ -1,0 +1,56 @@
+{
+"name":"anticipation",
+"outputFormat":"png",
+"minWidth":0,
+"minHeight":0,
+"maxWidth":4096,
+"maxHeight":4096,
+"pot":false,
+"rotation":false,
+"frames": [
+    {
+        "file": "anticipation/anticipation-00.png"
+    },
+    {
+        "file": "anticipation/anticipation-01.png"
+    },
+    {
+        "file": "anticipation/anticipation-02.png"
+    },
+    {
+        "file": "anticipation/anticipation-03.png"
+    },
+    {
+        "file": "anticipation/anticipation-04.png"
+    },
+    {
+        "file": "anticipation/anticipation-05.png"
+    },
+    {
+        "file": "anticipation/anticipation-06.png"
+    },
+    {
+        "file": "anticipation/anticipation-07.png"
+    },
+    {
+        "file": "anticipation/anticipation-08.png"
+    },
+    {
+        "file": "anticipation/anticipation-09.png"
+    },
+    {
+        "file": "anticipation/anticipation-10.png"
+    },
+    {
+        "file": "anticipation/anticipation-11.png"
+    },
+    {
+        "file": "anticipation/anticipation-12.png"
+    },
+    {
+        "file": "anticipation/anticipation-13.png"
+    },
+    {
+        "file": "anticipation/anticipation-14.png"
+    }]
+}

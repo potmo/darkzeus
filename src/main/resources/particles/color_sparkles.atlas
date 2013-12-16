@@ -1,0 +1,41 @@
+{
+"name":"color_sparkles",
+"outputFormat":"png",
+"minWidth":0,
+"minHeight":0,
+"maxWidth":512,
+"maxHeight":4096,
+"pot":false,
+"rotation":false,
+"frames": [
+    {
+        "file": "particles/star_lg_pink.png"
+    },
+    {
+        "file": "particles/star_lg_yellow.png"
+    },
+    {
+        "file": "particles/star_med_blue.png"
+    },
+    {
+        "file": "particles/star_med_pink.png"
+    },
+    {
+        "file": "particles/star_med_purple.png"
+    },
+    {
+        "file": "particles/star_med_yellow.png"
+    },
+    {
+        "file": "particles/star_sm_blue.png"
+    },
+    {
+        "file": "particles/star_sm_pink.png"
+    },
+    {
+        "file": "particles/star_sm_purple.png"
+    },
+    {
+        "file": "particles/star_sm_yellow.png"
+    }]
+}

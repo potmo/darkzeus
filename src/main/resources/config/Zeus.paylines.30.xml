@@ -1,0 +1,758 @@
+<PaylineSetList>
+    <!-- 30-line payline configuration -->
+    <PaylineSet>
+        <Identifier>30  </Identifier>
+        <AvailablePaylineList>
+            <Payline>
+                <LineNumber>1 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>2 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>3 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>4 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>5 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>6 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>7 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>8 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>9 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>10 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>11 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>12 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>13 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>14 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>15 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>16 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>17 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>18 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>19 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>20 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>21 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>22 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>23 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>24 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>25 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>26 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>27 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>28 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>29 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+            <Payline>
+                <LineNumber>30 </LineNumber>
+                <PositionList>
+                    <Position>
+                        <ReelIndex>0 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>1 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>2 </ReelIndex>
+                        <OffsetFromCenter>2 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>3 </ReelIndex>
+                        <OffsetFromCenter>1 </OffsetFromCenter>
+                    </Position>
+                    <Position>
+                        <ReelIndex>4 </ReelIndex>
+                        <OffsetFromCenter>0 </OffsetFromCenter>
+                    </Position>
+                </PositionList>
+            </Payline>
+        </AvailablePaylineList>
+    </PaylineSet>
+</PaylineSetList>
