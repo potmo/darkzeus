@@ -28,22 +28,29 @@ module darkgame
 			var strip: ReelStrip = new ReelStrip(stripSymbols);
 
 			//TODO: Make more reels.
-			this.reel = new Reel(5, 100, 100, strip);
+			this.reel = new Reel(5, strip, 100, 100);
 
 			// TODO: Maybe do another context here and backbuffer it
 			// TODO: Here we can pass in current timestamp so we can calculate the delta in the next loop
-			window.requestAnimationFrame((timestamp)=>this.mainLoop(timestamp, context));
+			var startTime: number = window.performance.now();
+			window.requestAnimationFrame((timestamp:number)=>{
+				this.mainLoop(timestamp, startTime, context);
+			});
 			
 		}
 
 
-		private mainLoop(timestamp: number, context: CanvasRenderingContext2D ):void
+		private mainLoop(timestamp:number, lastFrameTimestamp:number, context: CanvasRenderingContext2D ):void
 		{
 
-			this.reel.update();
+			var timeDelta: number = timestamp - lastFrameTimestamp;
+			var speedMultiplier: number = timeDelta / (1000 / 60); // 60 FPS is perfect
+
+			this.reel.update(speedMultiplier);
 			this.reel.render(context);
 
-			window.requestAnimationFrame((timestamp)=>this.mainLoop(timestamp, context));
+			lastFrameTimestamp = timestamp;
+			window.requestAnimationFrame((timestamp)=>this.mainLoop(timestamp, lastFrameTimestamp, context));
 		}
 
 	}
@@ -52,50 +59,74 @@ module darkgame
 
 	export class Reel
 	{
-		private symbolsWindowHeight: number;
-		private strip: ReelStrip;
-		private stripPointer: number;
-		private x:number;
-		private y:number;
-		private symbols:Array<Symbol>;
-		private symbolOffset: number;
+		private numberOfVisibleSymbols: number;
+		private infiniteReelStrip: ReelStrip;
+		private infiniteReelStripIndexPointer: number;
+		private visibleSymbols:Array<SymbolSprite>;
 		private symbolWidth: number;
 		private symbolHeight: number;
 
-		constructor(symbolsWindowHeight: number, x:number, y:number, strip: ReelStrip)
+		private velocity: number = 300;
+		private position: number = 0;
+		private x:number;
+		private y:number;
+
+		private starting: boolean = false;
+		private spinning: boolean = false;
+		private stopping: boolean = false;
+
+		constructor(numberOfVisibleSymbols: number, infiniteReelStrip: ReelStrip, x:number, y:number)
 		{
-			this.symbolsWindowHeight = symbolsWindowHeight;
-			this.strip = strip;
-			this.stripPointer = 0;
+			this.numberOfVisibleSymbols = numberOfVisibleSymbols;
+			this.infiniteReelStrip = infiniteReelStrip;
+			this.infiniteReelStripIndexPointer = 0;
+
 			this.x = x;
 			this.y = y;
+			
 
 			//TODO: The reels maybe want a velocity
 
-			this.symbols = [];
+			this.visibleSymbols = [];
 
-			this.symbolOffset = 0;
 			this.symbolWidth = 100;
 			this.symbolHeight = 100;
 
-			this.populate();
+			//TODO: Do we want to start at a random position maybe? In that case randomize the infiniteReelStripIndexPointer
+
+			// add the starting symbols
+			for (var i:number = 0; i < numberOfVisibleSymbols + 2; i++)
+			{
+				// move all other symbols since there will be one unshifted above them
+
+				for (var j:number = 0; j < this.visibleSymbols.length; j++ )
+				{
+					this.visibleSymbols[j].move( this.symbolHeight );
+				}
+
+				this.visibleSymbols.unshift( this.createSymbolSpriteFromInfiniteReelStrip() );
+
+
+			}
 
 			//TODO: Should the reel keep it's state: spinning, stopping, etc?
 
 		}
 
-		//TOODO: Maybe this function should not be used by the update() function. Nicer?
-		private populate():void
-		{
-			var symbol:Symbol;
 
-			// keep one outside the top and one outside the bottom
-			while (this.symbols.length < this.symbolsWindowHeight + 1)
-			{
-				symbol = this.strip.getNthSymbol(this.stripPointer);
-				this.symbols.unshift( symbol );
-				this.stripPointer++;
-			}
+		private createSymbolSpriteFromInfiniteReelStrip():SymbolSprite
+		{
+
+			var symbol:Symbol;
+			symbol = this.infiniteReelStrip.getNthSymbol(this.infiniteReelStripIndexPointer);
+			this.infiniteReelStripIndexPointer++;
+
+			return new SymbolSprite(symbol, 0);
+		}
+
+		private getReelViewportHeight():number
+		{
+			return this.numberOfVisibleSymbols * this.symbolHeight;
 		}
 
 
@@ -107,45 +138,68 @@ module darkgame
 			context.fillRect(0,0,800,600);
 
 			// TODO: When having oversized symbols we need to do skip them in the first pass and then make a second pass and draw those ontop
-			for (var i:number = 0; i < this.symbols.length; i++)
+			for (var i:number = 0; i < this.visibleSymbols.length; i++)
 			{
 
-				var image:HTMLImageElement = this.symbols[i].getImage();
+				var image:HTMLImageElement = this.visibleSymbols[i].getImage();
 
-				var x:number = 0;
-				var y:number = this.symbolOffset + this.symbolHeight * i - this.symbolHeight;
+				
+				var offsetX:number = 0;
+				var offsetY:number = this.visibleSymbols[i].getPosition() - this.symbolHeight;
 
-				var amountOver:number = Math.abs(Math.min(0, y));
-				var pixelHeight:number = this.symbolHeight * this.symbolsWindowHeight;
-				var amountUnder:number = Math.max(0, (y + this.symbolHeight) - pixelHeight);
+				var amountOver:number = Math.abs(Math.min(0, offsetY));
+				var pixelHeight:number = this.symbolHeight * this.numberOfVisibleSymbols;
+				var amountUnder:number = Math.max(0, (offsetY + this.symbolHeight) - pixelHeight);
 
-				context.drawImage(image, 0, amountOver, this.symbolWidth, this.symbolHeight - amountOver - amountUnder, this.x + x, this.y + y + amountOver, this.symbolWidth, this.symbolHeight - amountOver - amountUnder);
+				var srcX: number = 0;
+				var srcY: number = amountOver;
+				var srcWidth: number = this.symbolWidth;
+				var srcHeight: number = this.symbolHeight - amountOver - amountUnder;
+				var dstX: number  = this.x + offsetX;
+				var dstY: number = this.y + offsetY + amountOver;
+				var dstWidth: number = this.symbolWidth;
+				var dstHeight: number = this.symbolHeight - amountOver - amountUnder;
+
+
+				context.drawImage(image, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight);
 
 			}
 		}
 
 		//TODO: Take the time delta for smooth animation
-		public update():void
+		public update(speedMultiplier: number):void
 		{
 			//TODO: Remember that the reels cant run backwards. Fix that? (Could be needed with hard stop bounces?)
 
 			//TODO: Keep track of what velocity to use and bounce nice when we should stop etc
-			this.symbolOffset += 2.5;
+			
+			var moveDelta: number = this.velocity * speedMultiplier;
 
-			while ( this.symbolOffset >= this.symbolHeight )
+			// There is one symbol that should be outside the viewport so make sure that one is not removed
+			var reelViewportHeight:number = this.getReelViewportHeight() + 2 * this.symbolHeight;
+
+			// move all the symbols
+			for (var i:number = 0; i < this.visibleSymbols.length; i++)
 			{
-				// remove the symbol that is moving out the bottom
-				this.symbols.pop();
-
-				// add a new symbol at the top
-				var symbol:Symbol;
-				symbol = this.strip.getNthSymbol(this.stripPointer);
-				this.symbols.unshift( symbol );
-				this.stripPointer++;
-
-				// move the graphics up one symbol height
-				this.symbolOffset -= this.symbolHeight;
+				this.visibleSymbols[i].move( moveDelta );
 			}
+
+			// remove symbols outside the viewport
+			while ( this.visibleSymbols[ this.visibleSymbols.length - 1].getPosition() > reelViewportHeight )
+			{
+				var oldSymbol: SymbolSprite = this.visibleSymbols.pop( );
+
+				var overFlow:number = oldSymbol.getPosition() - reelViewportHeight;
+
+				var newSymbol: SymbolSprite = this.createSymbolSpriteFromInfiniteReelStrip();
+
+				newSymbol.move( overFlow );
+
+				this.visibleSymbols.unshift( newSymbol )
+			}
+
+			this.position += moveDelta;
+			this.velocity = Math.max(1,this.velocity * 0.95);
 
 
 		}
@@ -173,6 +227,9 @@ module darkgame
 		}
 	}
 
+	/*
+	 * A Symbol 
+	 */
 	export class Symbol
 	{
 		//TODO: This should be an image instead of just a color
@@ -186,8 +243,36 @@ module darkgame
 		{
 			return this.img;
 		}
+	}
 
+	/*
+	 * 
+	 */
+	export class SymbolSprite
+	{
+		private symbol:Symbol;
+		private position:number;
 
+		constructor(symbol:Symbol, position:number )
+		{
+			this.symbol = symbol;
+			this.position = position;
+		}
+
+		public getImage():HTMLImageElement
+		{
+			return this.symbol.getImage();
+		}
+
+		public getPosition():number
+		{
+			return this.position;
+		}
+
+		public move(delta:number):void
+		{
+			this.position += delta;
+		}
 	}
 
 }
