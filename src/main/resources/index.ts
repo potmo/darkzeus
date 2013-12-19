@@ -36,7 +36,16 @@ module darkgame
 			window.requestAnimationFrame((timestamp:number)=>{
 				this.mainLoop(timestamp, startTime, context);
 			});
+
+			canvas.addEventListener("click",(ev:Event)=>{
+				this.startReels();
+			},false);
 			
+		}
+
+		private startReels():void
+		{
+			this.reel.toggleStart();
 		}
 
 
@@ -46,7 +55,7 @@ module darkgame
 			var timeDelta: number = timestamp - lastFrameTimestamp;
 			var speedMultiplier: number = timeDelta / (1000 / 60); // 60 FPS is perfect
 
-			this.reel.update(speedMultiplier);
+			this.reel.update(timestamp);
 			this.reel.render(context);
 
 			lastFrameTimestamp = timestamp;
@@ -66,14 +75,16 @@ module darkgame
 		private symbolWidth: number;
 		private symbolHeight: number;
 
-		private velocity: number = 300;
-		private position: number = 0;
 		private x:number;
 		private y:number;
 
-		private starting: boolean = false;
-		private spinning: boolean = false;
-		private stopping: boolean = false;
+		private currentPositionManager: IPositionManager;
+		private lastPosition: number = 0;
+
+		private stoppedPositionManager: darkgame.StoppedPositionManager = new darkgame.StoppedPositionManager();
+		private runningPositionManager: darkgame.RunningPositionManager = new darkgame.RunningPositionManager();
+		private stoppingPositionManager: darkgame.StoppingPositionManager = new darkgame.StoppingPositionManager();
+		private startingPositionManager: darkgame.StartingPositionManager = new darkgame.StartingPositionManager();
 
 		constructor(numberOfVisibleSymbols: number, infiniteReelStrip: ReelStrip, x:number, y:number)
 		{
@@ -88,7 +99,6 @@ module darkgame
 			//TODO: The reels maybe want a velocity
 
 			this.visibleSymbols = [];
-
 			this.symbolWidth = 100;
 			this.symbolHeight = 100;
 
@@ -105,12 +115,63 @@ module darkgame
 				}
 
 				this.visibleSymbols.unshift( this.createSymbolSpriteFromInfiniteReelStrip() );
-
-
 			}
 
-			//TODO: Should the reel keep it's state: spinning, stopping, etc?
+			this.currentPositionManager = this.stoppedPositionManager;
+			this.stoppedPositionManager.start(0, (newPosition, newTimestamp)=>this.stoppedDone(newPosition, newTimestamp));
+			
+		}
 
+		private stoppedDone(position:number, timestamp:number):void
+		{
+			this.currentPositionManager = this.startingPositionManager;
+			this.startingPositionManager.start(position, timestamp, this.symbolHeight, 500, (newPosition, newTimestamp)=>this.startingDone(newPosition, newTimestamp));
+		}
+
+		private startingDone(position:number, timestamp:number):void
+		{
+			//TODO: Find out what the velocity was
+			this.currentPositionManager = this.runningPositionManager;
+			this.runningPositionManager.start(position, timestamp, 0.5, (newPosition, newTimestamp)=>this.runningDone(newPosition, newTimestamp));
+		}
+
+		private runningDone(position:number, timestamp:number):void
+		{
+			//TODO: Find out what the velocity was
+			//TODO: We need to know how long the stop should be. Always one symbol? 
+			this.currentPositionManager = this.stoppingPositionManager;
+			// move one more and let that slow down
+			this.stoppingPositionManager.start(position, timestamp, this.symbolHeight, 500, (newPosition, newTimestamp)=>this.stoppingDone(newPosition, newTimestamp));
+		}
+
+		private stoppingDone(position:number, timestamp:number):void
+		{
+			this.currentPositionManager = this.stoppedPositionManager;
+			this.stoppedPositionManager.start(position, (newPosition, newTimestamp)=>this.stoppedDone(newPosition, newTimestamp));
+		}
+
+		public toggleStart():void
+		{
+			if (this.currentPositionManager === this.stoppedPositionManager)
+			{
+				this.stoppedPositionManager.stop(); // ie stop the stopping and start spinning
+			}else if (this.currentPositionManager === this.runningPositionManager)
+			{
+				//TODO: Do some splicing etc. 
+
+				//TODO: Maybe we want a splicing positon manager instead so that code is not in the spinning manager.
+				// that way we can easaly add a anticipation splicing position manager when we want to do that.
+
+				// complete the symbol you are rolling and then roll three more before exiting running and slowing down
+				//TODO: The extra rolling should be calculated from how many symbols we have to roll before we can reach the symbol we want (think about splicing as well so it should be at least 7 or something)
+				var stopPosition:number = this.lastPosition;
+				stopPosition = stopPosition / this.symbolHeight;
+				stopPosition = Math.ceil(stopPosition);
+				stopPosition = stopPosition * this.symbolHeight;
+				//stopPosition = stopPosition + this.symbolHeight * 7; // this is where we add some extra ones
+				
+				this.runningPositionManager.stop(stopPosition);
+			}
 		}
 
 
@@ -167,14 +228,15 @@ module darkgame
 		}
 
 		//TODO: Take the time delta for smooth animation
-		public update(speedMultiplier: number):void
+		public update(timestamp: number):void
 		{
 			//TODO: Remember that the reels cant run backwards. Fix that? (Could be needed with hard stop bounces?)
 
-			//TODO: Keep track of what velocity to use and bounce nice when we should stop etc
-			
-			var moveDelta: number = this.velocity * speedMultiplier;
+			var newPosition:number = this.currentPositionManager.getPosition(timestamp);
 
+			var moveDelta:number = newPosition - this.lastPosition;
+			this.lastPosition = newPosition;
+			
 			// There is one symbol that should be outside the viewport so make sure that one is not removed
 			var reelViewportHeight:number = this.getReelViewportHeight() + 2 * this.symbolHeight;
 
@@ -198,11 +260,238 @@ module darkgame
 				this.visibleSymbols.unshift( newSymbol )
 			}
 
-			this.position += moveDelta;
-			this.velocity = Math.max(1,this.velocity * 0.95);
+			// tick to the next state if done
+			this.currentPositionManager.tick(timestamp);
 
 
 		}
+	}
+
+
+	export class StoppingPositionManager implements IPositionManager
+	{
+		private fromPosition: number;
+		private fromTime:number;
+		private duration:number;
+		private distance:number;
+
+		private doneCallback:(position: number, timestamp:number)=>void;
+
+		constructor()
+		{
+		}
+
+		public start(fromPosition:number, fromTime:number, distance:number, duration:number, doneCallback:(position: number, timestamp:number)=>void):void
+		{
+			console.log("starting stopping");
+			this.fromPosition = fromPosition;
+			this.fromTime = fromTime;
+			this.duration = duration;
+			this.distance = distance;
+
+			this.doneCallback = doneCallback;
+		}
+
+		public getPosition(currentTime:number):number
+		{
+
+			var timeDelta:number = currentTime - this.fromTime;		
+
+			// linear ease
+			var t:number = timeDelta / this.duration;
+
+			//constrain
+			t = Math.max(0, t);
+			t = Math.min(1, t);
+
+			//t = time;
+			//b = startValue;
+			//c = deltaChange;
+			//d = duration;
+			//s = strength? // 1.70158;
+
+
+			//ease in back (http://easings.net/#easeInBack)
+			//return c*(t/=d)*t*((s+1)*t - s) + b;
+
+			// ease out back
+			//return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;
+
+			t = t - 1;
+			var strength:number = 1.70158;
+			return this.distance * (t*t*((strength+1)*t + strength) + 1) + this.fromPosition;
+		}
+
+		public tick(currentTime:number)
+		{
+			var timeDelta:number = currentTime - this.fromTime;
+			var t:number = timeDelta / this.duration;
+
+			t = Math.max(0, t);
+			t = Math.min(1, t);
+
+			if (t >= 1.0)
+			{
+				this.doneCallback(this.getPosition(currentTime), currentTime);
+			}
+		}
+	}
+
+	export class StartingPositionManager implements IPositionManager
+	{
+		private fromPosition: number;
+		private fromTime:number;
+		private duration:number;
+		private distance:number;
+
+		private doneCallback:(position: number, timestamp:number)=>void;
+
+		constructor()
+		{			
+		}
+
+		public start(fromPosition:number, fromTime:number, distance:number, duration:number, doneCallback:(position: number, timestamp:number)=>void):void
+		{
+			console.log("starting starting");
+
+			this.fromPosition = fromPosition;
+			this.fromTime = fromTime;
+			this.duration = duration;
+			this.distance = distance;
+
+			this.doneCallback = doneCallback;
+		}
+
+		public getPosition(currentTime:number):number
+		{
+
+			var timeDelta:number = currentTime - this.fromTime;		
+
+			// linear ease
+			var t:number = timeDelta / this.duration;
+
+			//constrain
+			t = Math.max(0, t);
+			t = Math.min(1, t);
+
+			var strength:number = 1.70158;
+			return this.fromPosition + this.distance * t * ( ( strength + 1 ) * t - strength);
+
+		}
+
+		public tick(currentTime:number)
+		{
+			var timeDelta:number = currentTime - this.fromTime;
+			var t:number = timeDelta / this.duration;
+
+			t = Math.max(0, t);
+			t = Math.min(1, t);
+
+
+
+			if (t >= 1.0)
+			{
+				this.doneCallback(this.getPosition(currentTime), currentTime);
+			}
+		}
+	}
+
+	export class StoppedPositionManager implements IPositionManager
+	{
+		private atPosition: number;
+		private done:boolean;
+		private doneCallback:(position: number, timestamp:number)=>void;
+
+		constructor()
+		{
+
+		}
+
+		public start(atPosition: number,  doneCallback:(position: number, timestamp:number)=>void):void
+		{
+			console.log("starting stopped");
+
+			this.doneCallback = doneCallback;
+			this.atPosition = atPosition;
+			this.done = false;
+		}
+
+		public stop():void
+		{
+			this.done = true;
+			
+		}
+
+		public getPosition(currentTime:number):number
+		{
+			return this.atPosition;
+		}
+
+		public tick(currentTime:number)
+		{
+			if (this.done)
+			{
+				this.doneCallback(this.getPosition(currentTime), currentTime);
+			}
+		}
+	}
+
+	export class RunningPositionManager implements IPositionManager
+	{
+		private fromPosition:number;
+		private fromTime:number;
+		private toPosition:number;
+		private velocity:number;
+		private done:boolean;
+		private doneCallback:(position: number, timestamp:number)=>void;
+		
+		constructor()
+		{
+		}
+
+		public start(fromPosition: number, fromTime:number, velocity:number, doneCallback:(position: number, timestamp:number)=>void):void
+		{
+			console.log("starting running");
+
+			this.fromPosition = fromPosition;
+			this.fromTime = fromTime;
+			this.velocity = velocity;
+			this.doneCallback = doneCallback;
+			this.done = false;
+		}
+
+		public stop(stopPosition:number):void
+		{
+			this.done = true;
+			this.toPosition = stopPosition;
+		}
+
+		public getPosition(currentTime:number):number
+		{
+			//TODO: Maybe this should be scaled somehow
+			var timeDelta:number = currentTime - this.fromTime;
+
+			return this.fromPosition + timeDelta * this.velocity;
+		}
+
+		public tick(currentTime:number)
+		{
+			if (this.done)
+			{
+				var currentPosition:number = this.getPosition(currentTime);
+				if (this.toPosition <= currentPosition)
+				{
+					console.log("stopped. Just keep rolling some more");
+					this.doneCallback(this.toPosition, currentTime);
+				}
+			}
+		}
+	}
+
+	export interface IPositionManager
+	{
+		getPosition(currentTime: number):number;
+		tick(currentTime:number):void;
 	}
 
 	export class ReelStrip
