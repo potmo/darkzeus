@@ -131,8 +131,10 @@ module darkgame
 		private startingDone(position:number, timestamp:number):void
 		{
 			//TODO: Find out what the velocity was
+			var oldPositionManager:darkgame.IPositionManager;
+			oldPositionManager = this.currentPositionManager;
 			this.currentPositionManager = this.runningPositionManager;
-			this.runningPositionManager.start(position, timestamp, 0.5, (newPosition, newTimestamp)=>this.runningDone(newPosition, newTimestamp));
+			this.runningPositionManager.start(position, timestamp, oldPositionManager.getVelocity(timestamp), (newPosition, newTimestamp)=>this.runningDone(newPosition, newTimestamp));
 		}
 
 		private runningDone(position:number, timestamp:number):void
@@ -322,6 +324,11 @@ module darkgame
 			return this.distance * (t*t*((strength+1)*t + strength) + 1) + this.fromPosition;
 		}
 
+		public getVelocity(currentTime:number):number
+		{
+			return 0.0;
+		}
+
 		public tick(currentTime:number)
 		{
 			var timeDelta:number = currentTime - this.fromTime;
@@ -343,6 +350,8 @@ module darkgame
 		private fromTime:number;
 		private duration:number;
 		private distance:number;
+
+		private static BOUNCE_STRENGTH:number = 1.70158;
 
 		private doneCallback:(position: number, timestamp:number)=>void;
 
@@ -373,9 +382,23 @@ module darkgame
 			//constrain
 			t = Math.max(0, t);
 			t = Math.min(1, t);
+			
+			return this.fromPosition + this.distance * t * ( ( StartingPositionManager.BOUNCE_STRENGTH + 1 ) * t - StartingPositionManager.BOUNCE_STRENGTH);
 
-			var strength:number = 1.70158;
-			return this.fromPosition + this.distance * t * ( ( strength + 1 ) * t - strength);
+		}
+
+		public getVelocity(currentTime:number):number
+		{
+			var timeDelta:number = currentTime - this.fromTime;		
+			var t:number = timeDelta / this.duration;
+			t = Math.max(0, t);
+			t = Math.min(1, t);
+
+			//console.log("A: " + this.getPosition(this.fromTime + this.duration - (1000/60))));
+			//console.log("B: " + this.getPosition(this.fromTime + this.duration));
+
+			return (this.distance * ( StartingPositionManager.BOUNCE_STRENGTH  * (2 * t - 1) + 2 * t)) / this.duration;
+			return 2 * (StartingPositionManager.BOUNCE_STRENGTH + 1) * t - StartingPositionManager.BOUNCE_STRENGTH;
 
 		}
 
@@ -427,6 +450,11 @@ module darkgame
 			return this.atPosition;
 		}
 
+		public getVelocity(currentTime:number):number
+		{
+			return 0.0;
+		}
+
 		public tick(currentTime:number)
 		{
 			if (this.done)
@@ -474,6 +502,11 @@ module darkgame
 			return this.fromPosition + timeDelta * this.velocity;
 		}
 
+		public getVelocity(currentTime:number):number
+		{
+			return this.velocity;
+		}
+
 		public tick(currentTime:number)
 		{
 			if (this.done)
@@ -490,6 +523,7 @@ module darkgame
 
 	export interface IPositionManager
 	{
+		getVelocity(currentTime:number): number;
 		getPosition(currentTime: number):number;
 		tick(currentTime:number):void;
 	}
