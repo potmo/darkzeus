@@ -11,19 +11,19 @@ module darkgame
 
 			//TODO: Get this from resource bundle instead
 			var stripSymbols: Array<Symbol> = [];
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol01") ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol02") ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol03") ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol04") ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol05") ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol06") ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol07") ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol08") ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol09") ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol10") ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol11") ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol12") ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol13") ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol01"), 00 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol02"), 01 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol03"), 02 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol04"), 03 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol05"), 04 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol06"), 05 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol07"), 06 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol08"), 07 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol09"), 08 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol10"), 09 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol11"), 10 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol12"), 11 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol13"), 12 ) );
 
 			var strip: ReelStrip = new ReelStrip(stripSymbols);
 
@@ -164,13 +164,18 @@ module darkgame
 				//TODO: Maybe we want a splicing positon manager instead so that code is not in the spinning manager.
 				// that way we can easaly add a anticipation splicing position manager when we want to do that.
 
+				var anticipateSymbolsCount:number = this.numberOfVisibleSymbols;
+				var stopSymbolIndex:number = 3;
+				this.infiniteReelStripIndexPointer = this.infiniteReelStrip.getFiniteLength() + stopSymbolIndex + anticipateSymbolsCount; 
+
 				// complete the symbol you are rolling and then roll three more before exiting running and slowing down
 				//TODO: The extra rolling should be calculated from how many symbols we have to roll before we can reach the symbol we want (think about splicing as well so it should be at least 7 or something)
 				var stopPosition:number = this.lastPosition;
 				stopPosition = stopPosition / this.symbolHeight;
 				stopPosition = Math.ceil(stopPosition);
 				stopPosition = stopPosition * this.symbolHeight;
-				//stopPosition = stopPosition + this.symbolHeight * 7; // this is where we add some extra ones
+				
+				stopPosition = stopPosition + this.symbolHeight * anticipateSymbolsCount; // this is where we add some extra ones
 				
 				this.runningPositionManager.stop(stopPosition);
 			}
@@ -548,6 +553,11 @@ module darkgame
 			// first is the last index.
 			return this.symbols[this.symbols.length -1 -n];
 		}
+
+		public getFiniteLength():number
+		{
+			return this.symbols.length;
+		}
 	}
 
 	/*
@@ -557,9 +567,16 @@ module darkgame
 	{
 		//TODO: This should be an image instead of just a color
 		private img:HTMLImageElement;
-		constructor(img:HTMLImageElement)
+		private index:number;
+		constructor(img:HTMLImageElement, index:number)
 		{
 			this.img = img;
+			this.index = index;
+		}
+
+		public getIndex():number
+		{
+			return this.index;
 		}
 
 		public getImage():HTMLImageElement
@@ -575,11 +592,13 @@ module darkgame
 	{
 		private symbol:Symbol;
 		private position:number;
+		
 
 		constructor(symbol:Symbol, position:number )
 		{
 			this.symbol = symbol;
 			this.position = position;
+			
 		}
 
 		public getImage():HTMLImageElement
