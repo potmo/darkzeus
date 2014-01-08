@@ -11,19 +11,21 @@ module darkgame
 
 			//TODO: Get this from resource bundle instead
 			var stripSymbols: Array<Symbol> = [];
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol01"), 00 ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol02"), 01 ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol03"), 02 ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol04"), 03 ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol05"), 04 ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol06"), 05 ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol07"), 06 ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol08"), 07 ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol09"), 08 ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol10"), 09 ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol11"), 10 ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol12"), 11 ) );
-			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol13"), 12 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol00"), 00 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol01"), 01 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol02"), 02 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol03"), 03 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol04"), 04 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol05"), 05 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol06"), 06 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol07"), 07 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol08"), 08 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol09"), 09 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol10"), 10 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol11"), 11 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol12"), 12 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol13"), 13 ) );
+			stripSymbols.push( new Symbol( <HTMLImageElement>document.getElementById("symbol14"), 14 ) );
 
 			var strip: ReelStrip = new ReelStrip(stripSymbols);
 
@@ -159,24 +161,25 @@ module darkgame
 				this.stoppedPositionManager.stop(); // ie stop the stopping and start spinning
 			}else if (this.currentPositionManager === this.runningPositionManager)
 			{
-				//TODO: Do some splicing etc. 
-
-				//TODO: Maybe we want a splicing positon manager instead so that code is not in the spinning manager.
-				// that way we can easaly add a anticipation splicing position manager when we want to do that.
-
 				var anticipateSymbolsCount:number = this.numberOfVisibleSymbols;
-				var stopSymbolIndex:number = 3;
-				this.infiniteReelStripIndexPointer = this.infiniteReelStrip.getFiniteLength() + stopSymbolIndex + anticipateSymbolsCount; 
+				var stopSymbolIndex:number = 14;
 
 				// complete the symbol you are rolling and then roll three more before exiting running and slowing down
-				//TODO: The extra rolling should be calculated from how many symbols we have to roll before we can reach the symbol we want (think about splicing as well so it should be at least 7 or something)
 				var stopPosition:number = this.lastPosition;
 				stopPosition = stopPosition / this.symbolHeight;
-				stopPosition = Math.ceil(stopPosition);
+				stopPosition = Math.floor(stopPosition);
 				stopPosition = stopPosition * this.symbolHeight;
 				
-				stopPosition = stopPosition + this.symbolHeight * anticipateSymbolsCount; // this is where we add some extra ones
+				// roll this amount of pixels before stopping. The position needs to be ahead
+				// we want to roll out all visible symbols before we stop
+				stopPosition = stopPosition + this.symbolHeight * anticipateSymbolsCount; 
+
+				// set the strip index to some back so we can roll a couple before we stop
+				this.infiniteReelStripIndexPointer = this.infiniteReelStrip.getFiniteLength() * 2 - stopSymbolIndex - anticipateSymbolsCount; 
+
+				console.log("stopping at: " + stopPosition + " index: " + this.infiniteReelStripIndexPointer)
 				
+				//TODO: This should be a pending stop position manager instead
 				this.runningPositionManager.stop(stopPosition);
 			}
 		}
