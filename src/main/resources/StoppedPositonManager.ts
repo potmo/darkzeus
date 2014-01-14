@@ -11,18 +11,19 @@ module darkgame
 
 		}
 
-		public start(atPosition: number,  doneCallback:(position: number, timestamp:number)=>void):void
+		public start(atPosition: number):void
 		{
 			console.log("starting stopped");
 
-			this.doneCallback = doneCallback;
 			this.atPosition = atPosition;
 			this.done = false;
 		}
 
-		public stop():void
+		public stop(doneCallback:(position: number, timestamp:number)=>void):void
 		{
+			this.doneCallback = doneCallback;
 			this.done = true;
+
 			
 		}
 

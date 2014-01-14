@@ -2,7 +2,11 @@ module darkgame
 {
 	export class DarkGame
 	{
-		private reel: darkgame.Reel;
+		private reel0: darkgame.Reel;
+		private reel1: darkgame.Reel;
+		private reel2: darkgame.Reel;
+		private reel3: darkgame.Reel;
+		private reel4: darkgame.Reel;
 
 		constructor()
 		{
@@ -30,7 +34,11 @@ module darkgame
 			var strip: darkgame.ReelStrip = new darkgame.ReelStrip(stripSymbols);
 
 			//TODO: Make more reels.
-			this.reel = new darkgame.Reel(5, strip, 100, 100);
+			this.reel0 = new darkgame.Reel(5, strip, 100, 100);
+			this.reel1 = new darkgame.Reel(5, strip, 200, 100);
+			this.reel2 = new darkgame.Reel(5, strip, 300, 100);
+			this.reel3 = new darkgame.Reel(5, strip, 400, 100);
+			this.reel4 = new darkgame.Reel(5, strip, 500, 100);
 
 			// TODO: Maybe do another context here and backbuffer it
 			// TODO: Here we can pass in current timestamp so we can calculate the delta in the next loop
@@ -47,18 +55,43 @@ module darkgame
 
 		private startReels():void
 		{
-			this.reel.toggleStart();
+			this.reel0.start();
+			this.reel1.start();
+			this.reel2.start();
+			this.reel3.start();
+			this.reel4.start();
+
+			// simulate some connection and then stop
+			window.setTimeout(()=>{
+				this.reel0.stop(5);
+				this.reel1.stop(6);
+				this.reel2.stop(7);
+				this.reel3.stop(8);
+				this.reel4.stop(9);
+			}, 3000);
 		}
 
 
 		private mainLoop(timestamp:number, lastFrameTimestamp:number, context: CanvasRenderingContext2D ):void
 		{
 
+			context.fillStyle = "#FFFFFF";
+			context.fillRect(0,0,800,600);
+
 			var timeDelta: number = timestamp - lastFrameTimestamp;
 			var speedMultiplier: number = timeDelta / (1000 / 60); // 60 FPS is perfect
 
-			this.reel.update(timestamp);
-			this.reel.render(context);
+			this.reel0.update(timestamp);
+			this.reel1.update(timestamp);
+			this.reel2.update(timestamp);
+			this.reel3.update(timestamp);
+			this.reel4.update(timestamp);
+
+			this.reel0.render(context);
+			this.reel1.render(context);
+			this.reel2.render(context);
+			this.reel3.render(context);
+			this.reel4.render(context);
 
 			lastFrameTimestamp = timestamp;
 			window.requestAnimationFrame((timestamp)=>this.mainLoop(timestamp, lastFrameTimestamp, context));
@@ -66,6 +99,3 @@ module darkgame
 
 	}
 }
-
-// boostrap
-var game:darkgame.DarkGame = new darkgame.DarkGame();

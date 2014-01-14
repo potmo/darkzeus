@@ -9,13 +9,13 @@ module darkgame
 
 		private static BOUNCE_STRENGTH:number = 1.70158;
 
-		private doneCallback:(position: number, timestamp:number)=>void;
+		private doneCallback:(position: number, velocity:number, timestamp:number)=>void;
 
 		constructor()
 		{			
 		}
 
-		public start(fromPosition:number, fromTime:number, distance:number, duration:number, doneCallback:(position: number, timestamp:number)=>void):void
+		public start(fromPosition:number, fromTime:number, distance:number, duration:number, doneCallback:(position: number, velocity:number, timestamp:number)=>void):void
 		{
 			console.log("starting starting");
 
@@ -70,7 +70,9 @@ module darkgame
 
 			if (t >= 1.0)
 			{
-				this.doneCallback(this.getPosition(currentTime), currentTime);
+				var currentPositon:number = this.getPosition(currentTime);
+				var currentVelocity:number = this.getVelocity(currentTime);
+				this.doneCallback(currentPositon, currentVelocity, currentTime);
 			}
 		}
 	}

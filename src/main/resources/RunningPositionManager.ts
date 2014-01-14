@@ -4,30 +4,28 @@ module darkgame
 	{
 		private fromPosition:number;
 		private fromTime:number;
-		private toPosition:number;
 		private velocity:number;
 		private done:boolean;
-		private doneCallback:(position: number, timestamp:number)=>void;
+		private doneCallback:(position: number, timestamp:number, velocity:number)=>void;
 		
 		constructor()
 		{
 		}
 
-		public start(fromPosition: number, fromTime:number, velocity:number, doneCallback:(position: number, timestamp:number)=>void):void
+		public start(fromPosition: number, fromTime:number, velocity:number):void
 		{
 			console.log("starting running");
 
 			this.fromPosition = fromPosition;
 			this.fromTime = fromTime;
 			this.velocity = velocity;
-			this.doneCallback = doneCallback;
 			this.done = false;
 		}
 
-		public stop(stopPosition:number):void
+		public stop(doneCallback:(position: number, timestamp:number, velocity:number)=>void):void
 		{
+			this.doneCallback = doneCallback;
 			this.done = true;
-			this.toPosition = stopPosition;
 		}
 
 		public getPosition(currentTime:number):number
@@ -47,12 +45,9 @@ module darkgame
 		{
 			if (this.done)
 			{
-				var currentPosition:number = this.getPosition(currentTime);
-				if (this.toPosition <= currentPosition)
-				{
-					console.log("stopped. Just keep rolling some more");
-					this.doneCallback(this.toPosition, currentTime);
-				}
+				var currentPositon: number = this.getPosition(currentTime);
+				var currentVelocity:number = this.getVelocity(currentTime);
+				this.doneCallback(currentPositon, currentTime, currentVelocity);
 			}
 		}
 	}

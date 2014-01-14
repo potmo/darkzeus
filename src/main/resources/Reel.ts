@@ -20,6 +20,7 @@ module darkgame
 		private runningPositionManager: darkgame.RunningPositionManager = new darkgame.RunningPositionManager();
 		private stoppingPositionManager: darkgame.StoppingPositionManager = new darkgame.StoppingPositionManager();
 		private startingPositionManager: darkgame.StartingPositionManager = new darkgame.StartingPositionManager();
+		private prepareStoppingPositionManager: darkgame.PrepareStoppingPositionManager = new darkgame.PrepareStoppingPositionManager();
 
 		constructor(numberOfVisibleSymbols: number, infiniteReelStrip: darkgame.ReelStrip, x:number, y:number)
 		{
@@ -53,50 +54,45 @@ module darkgame
 			}
 
 			this.currentPositionManager = this.stoppedPositionManager;
-			this.stoppedPositionManager.start(0, (newPosition, newTimestamp)=>this.stoppedDone(newPosition, newTimestamp));
+			this.stoppedPositionManager.start(0);
+
 			
 		}
 
-		private stoppedDone(position:number, timestamp:number):void
-		{
-			this.currentPositionManager = this.startingPositionManager;
-			this.startingPositionManager.start(position, timestamp, this.symbolHeight, 500, (newPosition, newTimestamp)=>this.startingDone(newPosition, newTimestamp));
-		}
 
-		private startingDone(position:number, timestamp:number):void
+		public start():void
 		{
-			//TODO: Find out what the velocity was
-			var oldPositionManager:darkgame.IPositionManager;
-			oldPositionManager = this.currentPositionManager;
-			this.currentPositionManager = this.runningPositionManager;
-			this.runningPositionManager.start(position, timestamp, oldPositionManager.getVelocity(timestamp), (newPosition, newTimestamp)=>this.runningDone(newPosition, newTimestamp));
-		}
+			//TODO: Where do we find the current stopped positon and timestamp?
+			// inline it in the stopped position manager?
 
-		private runningDone(position:number, timestamp:number):void
-		{
-			//TODO: Find out what the velocity was
-			//TODO: We need to know how long the stop should be. Always one symbol? 
-			this.currentPositionManager = this.stoppingPositionManager;
-			// move one more and let that slow down
-			this.stoppingPositionManager.start(position, timestamp, this.symbolHeight, 500, (newPosition, newTimestamp)=>this.stoppingDone(newPosition, newTimestamp));
-		}
 
-		private stoppingDone(position:number, timestamp:number):void
-		{
-			this.currentPositionManager = this.stoppedPositionManager;
-			this.stoppedPositionManager.start(position, (newPosition, newTimestamp)=>this.stoppedDone(newPosition, newTimestamp));
-		}
-
-		public toggleStart():void
-		{
-			if (this.currentPositionManager === this.stoppedPositionManager)
+			// Stop the stopped position manager and therefore start the starting
+			this.stoppedPositionManager.stop((stoppedPosition, stoppedTimestamp)=>
 			{
-				this.stoppedPositionManager.stop(); // ie stop the stopping and start spinning
-			}else if (this.currentPositionManager === this.runningPositionManager)
-			{
-				var anticipateSymbolsCount:number = this.numberOfVisibleSymbols;
-				var stopSymbolIndex:number = 14;
+				// stopped done. start starting
+				this.currentPositionManager = this.startingPositionManager;
+				this.startingPositionManager.start(stoppedPosition, stoppedTimestamp, this.symbolHeight, 500, (startingPosition, startingVelocity, startingTimestamp)=>
+				{
+					// starting done. start running
+					this.currentPositionManager = this.runningPositionManager;
+					this.runningPositionManager.start(startingPosition, startingTimestamp, startingVelocity);
+				});
+			});
+	
+		}
 
+		public stop(stopSymbolIndex:number):void
+		{
+		
+
+			// begin to stop
+			this.runningPositionManager.stop((runningPosition:number, runningTimestamp:number, runningVelocity:number)=>{
+				console.log("stopping");
+				this.currentPositionManager = this.prepareStoppingPositionManager;
+
+				// calculate stop position
+				var flushSymbolsCount:number = this.numberOfVisibleSymbols + stopSymbolIndex;
+				
 				// complete the symbol you are rolling and then roll three more before exiting running and slowing down
 				var stopPosition:number = this.lastPosition;
 				stopPosition = stopPosition / this.symbolHeight;
@@ -105,16 +101,26 @@ module darkgame
 				
 				// roll this amount of pixels before stopping. The position needs to be ahead
 				// we want to roll out all visible symbols before we stop
-				stopPosition = stopPosition + this.symbolHeight * anticipateSymbolsCount; 
+				stopPosition = stopPosition + this.symbolHeight * flushSymbolsCount; 
 
 				// set the strip index to some back so we can roll a couple before we stop
-				this.infiniteReelStripIndexPointer = this.infiniteReelStrip.getFiniteLength() * 2 - stopSymbolIndex - anticipateSymbolsCount; 
+				this.infiniteReelStripIndexPointer = this.infiniteReelStrip.getFiniteLength() * 2 - stopSymbolIndex - flushSymbolsCount; 
 
-				console.log("stopping at: " + stopPosition + " index: " + this.infiniteReelStripIndexPointer)
-				
-				//TODO: This should be a pending stop position manager instead
-				this.runningPositionManager.stop(stopPosition);
-			}
+
+				//fromPosition: number, toPosition:number, fromTime:number, velocity:number
+				this.prepareStoppingPositionManager.start(runningPosition, stopPosition, runningTimestamp, runningVelocity, (preparePositon:number, prepareVelocity:number, prepareTime:number)=>{
+					console.log("prepare stopping done");
+					this.currentPositionManager = this.stoppingPositionManager;
+					//fromPosition:number, fromTime:number, distance:number, duration:number
+					this.stoppingPositionManager.start(preparePositon, prepareTime, this.symbolHeight, 500, (stoppingPosition: number, stoppingTimestamp:number)=>{
+						console.log("stopping done");
+						this.currentPositionManager = this.stoppedPositionManager;
+						this.stoppedPositionManager.start(stoppingPosition);
+					});
+				});
+			});
+			
+
 		}
 
 		private createSymbolSpriteFromInfiniteReelStrip():darkgame.SymbolSprite
@@ -138,8 +144,6 @@ module darkgame
 		{
 			//TODO: Should the reel take the context in the constructor? In that case we can't do backbuffering so easy. Is that even needed?
 
-			context.fillStyle = "#FFFFFF";
-			context.fillRect(0,0,800,600);
 
 			// TODO: When having oversized symbols we need to do skip them in the first pass and then make a second pass and draw those ontop
 			for (var i:number = 0; i < this.visibleSymbols.length; i++)
