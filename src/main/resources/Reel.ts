@@ -91,7 +91,7 @@ module darkgame
 				this.currentPositionManager = this.prepareStoppingPositionManager;
 
 				// calculate stop position
-				var flushSymbolsCount:number = this.numberOfVisibleSymbols + stopSymbolIndex;
+				var flushSymbolsCount:number = this.numberOfVisibleSymbols + stopSymbolIndex * 3; // this last part should not be here. It sould be a separate thing
 				
 				// complete the symbol you are rolling and then roll three more before exiting running and slowing down
 				var stopPosition:number = this.lastPosition;
@@ -104,7 +104,7 @@ module darkgame
 				stopPosition = stopPosition + this.symbolHeight * flushSymbolsCount; 
 
 				// set the strip index to some back so we can roll a couple before we stop
-				this.infiniteReelStripIndexPointer = this.infiniteReelStrip.getFiniteLength() * 2 - stopSymbolIndex - flushSymbolsCount; 
+				this.infiniteReelStripIndexPointer = this.infiniteReelStrip.getFiniteLength() * 100 - stopSymbolIndex - flushSymbolsCount; 
 
 
 				//fromPosition: number, toPosition:number, fromTime:number, velocity:number
