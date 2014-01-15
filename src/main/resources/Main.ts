@@ -55,19 +55,19 @@ module darkgame
 
 		private startReels():void
 		{
-			this.reel0.start();
-			this.reel1.start();
-			this.reel2.start();
-			this.reel3.start();
-			this.reel4.start();
+			this.reel0.start(0);
+			this.reel1.start(50);
+			this.reel2.start(100);
+			this.reel3.start(150);
+			this.reel4.start(200);
 
 			// simulate some connection and then stop
 			window.setTimeout(()=>{
-				this.reel0.stop(0);
-				this.reel1.stop(1);
-				this.reel2.stop(2);
-				this.reel3.stop(3);
-				this.reel4.stop(4);
+				this.reel0.stop(0, 1);
+				this.reel1.stop(1, 2);
+				this.reel2.stop(2, 3);
+				this.reel3.stop(3, 10);
+				this.reel4.stop(4, 11);
 			}, 3000);
 		}
 

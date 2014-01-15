@@ -21,6 +21,7 @@ module darkgame
 		private stoppingPositionManager: darkgame.StoppingPositionManager = new darkgame.StoppingPositionManager();
 		private startingPositionManager: darkgame.StartingPositionManager = new darkgame.StartingPositionManager();
 		private prepareStoppingPositionManager: darkgame.PrepareStoppingPositionManager = new darkgame.PrepareStoppingPositionManager();
+		private prepareStartingPositionManager: darkgame.PrepareStartingPositionManager = new darkgame.PrepareStartingPositionManager();
 
 		constructor(numberOfVisibleSymbols: number, infiniteReelStrip: darkgame.ReelStrip, x:number, y:number)
 		{
@@ -60,7 +61,7 @@ module darkgame
 		}
 
 
-		public start():void
+		public start(delayMillis:number):void
 		{
 			//TODO: Where do we find the current stopped positon and timestamp?
 			// inline it in the stopped position manager?
@@ -69,19 +70,24 @@ module darkgame
 			// Stop the stopped position manager and therefore start the starting
 			this.stoppedPositionManager.stop((stoppedPosition, stoppedTimestamp)=>
 			{
-				// stopped done. start starting
-				this.currentPositionManager = this.startingPositionManager;
-				this.startingPositionManager.start(stoppedPosition, stoppedTimestamp, this.symbolHeight, 500, (startingPosition, startingVelocity, startingTimestamp)=>
-				{
-					// starting done. start running
-					this.currentPositionManager = this.runningPositionManager;
-					this.runningPositionManager.start(startingPosition, startingTimestamp, startingVelocity);
+				// stop done. start starting
+				this.currentPositionManager = this.prepareStartingPositionManager;
+				this.prepareStartingPositionManager.start(stoppedPosition, stoppedTimestamp, delayMillis, (prepareStartingPosition, prepareStartingTimestamp)=>{
+
+					// prepare stopping done. start starting
+					this.currentPositionManager = this.startingPositionManager;
+					this.startingPositionManager.start(prepareStartingPosition, prepareStartingTimestamp, this.symbolHeight, 500, (startingPosition, startingVelocity, startingTimestamp)=>
+					{
+						// starting done. start running
+						this.currentPositionManager = this.runningPositionManager;
+						this.runningPositionManager.start(startingPosition, startingTimestamp, startingVelocity);
+					});
 				});
 			});
 	
 		}
 
-		public stop(stopSymbolIndex:number):void
+		public stop(stopSymbolIndex:number, extraSymbolsToRollBy:number):void
 		{
 		
 
@@ -89,23 +95,13 @@ module darkgame
 			this.runningPositionManager.stop((runningPosition:number, runningTimestamp:number, runningVelocity:number)=>{
 				console.log("stopping");
 				this.currentPositionManager = this.prepareStoppingPositionManager;
+		
 
-				// calculate stop position
-				var flushSymbolsCount:number = this.numberOfVisibleSymbols + stopSymbolIndex * 3; // this last part should not be here. It sould be a separate thing
-				
-				// complete the symbol you are rolling and then roll three more before exiting running and slowing down
-				var stopPosition:number = this.lastPosition;
-				stopPosition = stopPosition / this.symbolHeight;
-				stopPosition = Math.floor(stopPosition);
-				stopPosition = stopPosition * this.symbolHeight;
-				
-				// roll this amount of pixels before stopping. The position needs to be ahead
-				// we want to roll out all visible symbols before we stop
-				stopPosition = stopPosition + this.symbolHeight * flushSymbolsCount; 
+				// set the strip index. This will take into account that the reels will roll for a while
+				this.infiniteReelStripIndexPointer = this.getInfiniteReelStripIndexPointer(stopSymbolIndex, extraSymbolsToRollBy);
 
-				// set the strip index to some back so we can roll a couple before we stop
-				this.infiniteReelStripIndexPointer = this.infiniteReelStrip.getFiniteLength() * 100 - stopSymbolIndex - flushSymbolsCount; 
-
+				// set the stop position
+				var stopPosition:number = this.getStopPosition(stopSymbolIndex, extraSymbolsToRollBy);
 
 				//fromPosition: number, toPosition:number, fromTime:number, velocity:number
 				this.prepareStoppingPositionManager.start(runningPosition, stopPosition, runningTimestamp, runningVelocity, (preparePositon:number, prepareVelocity:number, prepareTime:number)=>{
@@ -119,8 +115,36 @@ module darkgame
 					});
 				});
 			});
-			
+		}
 
+		private getStopPosition(stopSymbolIndex:number, extraSymbolsToRollBy:number):number
+		{
+			// calculate stop position
+			var flushSymbolsCount:number = this.numberOfVisibleSymbols + stopSymbolIndex + extraSymbolsToRollBy; 
+			
+			// complete the symbol you are rolling and then roll three more before exiting running and slowing down
+			var stopPosition:number = this.lastPosition;
+			stopPosition = stopPosition / this.symbolHeight;
+			stopPosition = Math.floor(stopPosition);
+			stopPosition = stopPosition * this.symbolHeight;
+			
+			// roll this amount of pixels before stopping. The position needs to be ahead
+			// we want to roll out all visible symbols before we stop
+			stopPosition = stopPosition + this.symbolHeight * flushSymbolsCount; 
+
+			return stopPosition;
+		}
+
+		private getInfiniteReelStripIndexPointer(stopSymbolIndex:number, extraSymbolsToRollBy:number):number
+		{
+			// calculate stop position
+			var flushSymbolsCount:number = this.numberOfVisibleSymbols + stopSymbolIndex + extraSymbolsToRollBy; 
+			
+			// set the strip index to some back so we can roll a couple before we stop
+			// move ahead 1000 reel strip lengths just to never stop at negative positions
+			var pointer:number = this.infiniteReelStrip.getFiniteLength() * 1000 - stopSymbolIndex - flushSymbolsCount; 
+
+			return pointer;
 		}
 
 		private createSymbolSpriteFromInfiniteReelStrip():darkgame.SymbolSprite
